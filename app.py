@@ -11,7 +11,7 @@ if st.button("Predict"):
         st.warning("Please enter a message first.")
     else:
         data = {"message": message}
-        response = requests.post("http://127.0.0.1:8000/predict", params=data)
+        response = requests.post("https://tauheed1880-nlp-spam-app.hf.space", params=data)
         result = response.json()
 
         if result["prediction"] == 1:
