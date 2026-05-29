@@ -1,29 +1,25 @@
 import streamlit as st
 import requests
 
-st.title("SMS Spam & Phishing Detector")
-st.write("Enter any SMS message below to check if it is safe or spam.")
+st.title("SMS Spam Detector")
 
-message = st.text_area(
-    "SMS Message",
-    placeholder="e.g. Congratulations! You won a free iPhone. Click here to claim now!"
-)
+message = st.text_area("Enter SMS")
 
 if st.button("Predict"):
-    if not message.strip():
-        st.warning("Please enter a message first.")
-    else:
-        url = "https://tauheed1880-nlp-spam-app.hf.space/predict"
+    url = "https://tauheed1880-nlp-spam-app.hf.space/predict"
 
-        response = requests.post(url, json={"message": message})
+    response = requests.post(
+        url,
+        params={"message": message}
+    )
 
-        if response.status_code == 200:
-            result = response.json()
-            prediction = result.get("prediction")
+    if response.status_code == 200:
+        result = response.json()
+        prediction = result.get("prediction")
 
-            if prediction == 1:
-                st.error("SPAM / PHISHING This message looks malicious!")
-            else:
-                st.success("SAFE (HAM) This message looks legitimate.")
+        if prediction == 1:
+            st.error("SPAM")
         else:
-            st.error("Backend error. Please check API.")
+            st.success("HAM")
+    else:
+        st.error("Backend error")
